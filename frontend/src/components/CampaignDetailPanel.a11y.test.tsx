@@ -109,4 +109,30 @@ describe.each(THEMES)
     });
     expect(named).toBe(true);
   });
+
+  it('supports keyboard navigation to the primary pledge action', async () => {
+    render(
+      <CampaignDetailPanel
+        campaign={mockCampaign}
+        appConfig={mockConfig}
+        connectedWallet={mockCampaign.creator}
+      />,
+    );
+
+    const pledgeButton = screen.getByRole('button', { name: /pledge/i });
+    pledgeButton.focus();
+    expect(document.activeElement).toBe(pledgeButton);
+  });
+
+  it('exposes a landmark region for the campaign details', async () => {
+    render(
+      <CampaignDetailPanel
+        campaign={mockCampaign}
+        appConfig={mockConfig}
+        connectedWallet={mockCampaign.creator}
+      />,
+    );
+
+    expect(screen.getByRole('region')).toBeDefined();
+  });
 });

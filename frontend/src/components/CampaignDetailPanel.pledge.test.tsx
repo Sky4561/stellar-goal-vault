@@ -76,7 +76,7 @@ describe('Pledge form behavior', () => {
     expect(onPledge).toHaveBeenCalledWith(campaign.id, 12.34, 'XLM');
     expect(amount()).toHaveValue(12.34);
     expect(token()).toHaveValue('XLM');
-    expect(screen.queryByText('Pledge submitted successfully.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Pledge submitted successfully.')).not.toBeInDocument();
     await act(async () => pending.resolve());
     expect(screen.getByText('Pledge submitted successfully.')).toHaveAttribute('role', 'status');
     expect(amount()).toHaveValue(25);
@@ -88,7 +88,7 @@ describe('Pledge form behavior', () => {
     const { user, onPledge } = renderPledge({
       campaign: { ...campaign, acceptedTokens: ['USDC'] },
     });
-    expect(within(form()).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(within(form()).queryByRole('combobox')).not.toBeInDocument();
     await user.click(submit());
     expect(onPledge).toHaveBeenCalledTimes(1);
     expect(onPledge).toHaveBeenCalledWith(campaign.id, 25, 'USDC');
@@ -127,7 +127,7 @@ describe('Pledge form behavior', () => {
     expect(submit()).toBeEnabled();
     expect(amount()).toBeEnabled();
     expect(token()).toBeEnabled();
-    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.queryByRole('status')).not.toBeInDocument();
   });
 
   it.each([
@@ -143,7 +143,7 @@ describe('Pledge form behavior', () => {
     expect(amount()).toBeInvalid();
     await user.click(submit());
     expect(onPledge).not.toHaveBeenCalled();
-    expect(screen.queryByText('Pledge submitted successfully.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Pledge submitted successfully.')).not.toBeInDocument();
     expect(form()).toHaveAttribute('aria-busy', 'false');
   });
 
@@ -176,16 +176,16 @@ describe('Pledge form behavior', () => {
     expect(amount()).toHaveValue(42.5);
     expect(token()).toHaveValue('XLM');
     expect(submit()).toBeEnabled();
-    expect(screen.queryByText('Pledge submitted successfully.')).not.toBeInTheDocument();
-    await user.click(within(alert).getByRole('button', { name: 'Retry' }));
-    expect(onPledge).toHaveBeenN4hCalledWith(1, campaign.id, 42.5, 'XLM');
-    expect(onPledge).toHaveBeenN4hCalledWith(2, campaign.id, 42.5, 'XLM');
+    expect(screen.queryByText('Pledge submitted successfully.')).not.toBeInDocument();
+    await user.click(within(alert).getBryRole('button', { name: 'Retry' }));
+    expect(onPledge).toHaveBeenNThCalledWith(1, campaign.id, 42.5, 'XLM');
+    expect(onPledge).toHaveBeenNThCalledWith(2, campaign.id, 42.5, 'XLM');
     expect(onPledge).toHaveBeenCalledTimes(2);
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInDocument();
     expect(form()).not.toHaveAttribute('aria-describedby');
     expect(form()).toHaveAttribute('aria-busy', 'true');
     await act(async () => retry.resolve());
-    expect(screen.getByText('Pledge submitted successfully.')).toBeInTheDocument();
+    expect(screen.getByText('Pledge submitted successfully.')).toBeInDocument();
     expect(amount()).toHaveValue(25);
     expect(token()).toHaveValue('USDC');
   });
@@ -202,7 +202,7 @@ describe('Pledge form behavior', () => {
     const alert = await screen.findByRole('alert');
     expect(alert).toHaveTextContent('Could not estimate fee. Check your connection and retry.');
     expect(alert).not.toHaveTextContent('RPC details');
-    expect(within(alert).getByRole('button', { name: 'Retry' })).toBeEnabled();
+    expect(within(alert).getBryRole('button', { name: 'Retry' })).toBeEnabled();
   });
 
   it.each([undefined, new Error('   ')])(
@@ -244,8 +244,8 @@ describe('Pledge form behavior', () => {
 
   it('renders an empty selection without a pledge form', () => {
     const { onPledge } = renderPledge({ campaign: null });
-    expect(screen.getByText('Pick a campaign from the board to manage it.')).toBeInTheDocument();
-    expect(screen.queryByRole('form', { name: 'Pledge campaign' })).not.toBeInTheDocument();
+    expect(screen.getByText('Pick a campaign from the board to manage it.')).toBeInDocument();
+    expect(screen.queryByRole('form', { name: 'Pledge campaign' })).not.toBeInDocument();
     expect(onPledge).not.toHaveBeenCalled();
   });
 
@@ -255,7 +255,7 @@ describe('Pledge form behavior', () => {
       'aria-busy',
       'true'
     );
-    expect(screen.queryByRole('form', { name: 'Pledge campaign' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('form', { name: 'Pledge campaign' })).not.toBeInDocument();
     expect(onPledge).not.toHaveBeenCalled();
   });
 });

@@ -1,4 +1,4 @@
-import { useEffect, useRef from 'react';
+import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import './TransactionPreviewModal.css';
 
@@ -27,14 +27,20 @@ export function TransactionPreviewModal({
   onCancel,
 }: TransactionPreviewModalProps) {
   const [showXdr, setShowXdr] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLElement>(null);
   const confirmRef = useRef<HTMLButtonElement>(null);
+  const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    previousActiveElementRef.current = document.activeElement as HTMLElement | null;
     confirmRef.current?.focus();
+
+    return () => {
+      previousActiveElementRef.current?.focus?.();
+    };
   }, []);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key === 'Escape') {
       event.stopPropagation();
       onCancel();
@@ -128,12 +134,17 @@ export function TransactionPreviewModal({
               type="checkbox"
               checked={showXdr}
               onChange={(e) => setShowXdr(e.target.checked)}
+              aria-controls="transaction-preview-xdr"
             />
             <span>Show raw XDR</span>
           </label>
 
           {showXdr && (
-            <div className="xdr-content mono" aria-live="polite">
+            <div
+              id="transaction-preview-xdr"
+              className="xdr-content mono"
+              aria-live="polite"
+            >
               {preview.xdr}
             </div>
           )}
